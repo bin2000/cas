@@ -6,6 +6,8 @@ import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
@@ -20,7 +22,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Scott Battaglia
  * @since 3.0.0
  */
-@TestPropertySource(locations = {"classpath:/core.properties"})
+@TestPropertySource(properties = {
+    "cas.authn.policy.any.tryAll=true",
+    "spring.aop.proxy-target-class=true",
+    "cas.ticket.st.timeToKillInSeconds=30"
+})
+@SpringBootTest(classes = RefreshAutoConfiguration.class)
 public class InitialFlowSetupActionTests extends AbstractWebflowActionsTests {
     @Autowired
     @Qualifier("initialFlowSetupAction")
